@@ -1,0 +1,18 @@
+/* You can add global styles to this file, and also import other style files */
+@import 'sass/variables';
+
+html {
+	overflow-x: hidden;
+	height: 100%;
+
+	body {
+		color: #212121;
+		height: 100%;
+	}
+}
+
+@font-face {
+	font-family: "NexaRust";
+	src: url("/assets/fonts/nexa-rust.ttf");
+}
+

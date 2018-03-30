@@ -1,0 +1,20 @@
+<app-header></app-header>
+
+
+<ul class="side-nav" id="manager-bar" *ngIf="currentUser?.role === 'manager'">
+    <my-team></my-team>
+</ul>
+
+<section class="main row"
+         [ngClass]="{container: currentUser?.role !== 'manager'}">
+
+    <div class="col hide-on-med-and-down l3 offset-l1"
+         *ngIf="currentUser?.role === 'manager'">
+        <my-team class="card-panel"></my-team>
+    </div>
+
+    <app-cvform class="col s12"
+                [ngClass]="{'l7':currentUser?.role === 'manager'}">
+    </app-cvform>
+
+</section>

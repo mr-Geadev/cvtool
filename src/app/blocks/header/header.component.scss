@@ -1,0 +1,164 @@
+
+:host {
+	header {
+
+		.logo {
+			font-family: "NexaRust", cursive;
+			font-size: 2rem;
+			line-height: 1;
+			padding: 0.67rem;
+
+			span {
+				font-family: Roboto;
+				font-size: 0.8rem;
+			}
+		}
+
+		.userpic {
+			height: 2rem;
+			width: 2rem;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			overflow: hidden;
+			flex-shrink: 0;
+
+			img {
+				height: inherit;
+			}
+		}
+
+		.sign-out {
+			height: 100%;
+
+			a {
+				height: inherit;
+				justify-content: center;
+			}
+
+			ul {
+				width: auto;
+
+				li {
+					width: 100%;
+				}
+			}
+		}
+
+		.dropdown-content {
+			width: 13rem;
+			flex-wrap: wrap;
+			left: 130%;
+			display: flex;
+
+			li {
+				width: 50%;
+				display: flex;
+				justify-content: center;
+
+				img {
+					width: 3rem;
+				}
+
+				a {
+					height: inherit;
+					display: flex;
+					flex-direction: column;
+					justify-content: space-between;
+					align-items: center;
+
+					&:hover {
+						background-color: transparent;
+
+					}
+				}
+			}
+		}
+
+		.material-icons {
+			font-size: 2rem;
+		}
+
+		nav {
+			height: 3rem;
+
+			.nav-wrapper {
+				justify-content: space-between;
+
+				.button-collapse {
+					height: inherit;
+				}
+
+				i {
+					height: inherit;
+					line-height: 3rem;
+				}
+
+				.menu-full {
+					margin: 0.66rem;
+					height: 100%;
+
+					.name, .grade {
+						font-size: 1.2rem;
+						font-weight: 400;
+						margin-left: 0.3rem;
+						margin-right: 0.6rem;
+					}
+					.grade {
+						font-weight: 300;
+					}
+				}
+			}
+		}
+
+		ul.side-nav#mobile {
+			padding-top: 1rem;
+
+			li a {
+				display: flex;
+				flex-direction: row;
+				justify-content: flex-start;
+			}
+
+			li {
+				margin-top: 1rem;
+			}
+
+			li:first-child {
+				margin-bottom: 2rem;
+
+				a:hover {
+					background-color: transparent;
+					cursor: default;
+				}
+			}
+
+			li a > img {
+				width: 2rem;
+				height: 2rem;
+				margin-right: 0.6rem;
+				flex-shrink: 0;
+			}
+
+			.sign-out {
+				text-indent: 2.5rem;
+			}
+
+			.text {
+				margin-left: 0.66rem;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+
+				.name, .grade {
+					font-size: 1.2rem;
+					line-height: 1.1;
+				}
+
+				.grade {
+					font-weight: 300;
+				}
+			}
+		}
+	}
+}

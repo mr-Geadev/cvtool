@@ -1,0 +1,35 @@
+:host {
+	height: 100%;
+
+
+	.row.white {
+		height: 460px;
+		display: flex;
+		align-items: flex-end;
+	}
+
+	.container {
+		display: flex;
+		justify-content: center;
+		flex-direction: column;
+		align-items: center;
+		padding: 30px 0;
+	}
+
+	.logo {
+		font-family: "NexaRust", cursive;
+		font-size: 5rem;
+		line-height: 1;
+	}
+
+	.btn {
+		width: 100%;
+		max-width: 300px;
+	}
+
+	@media (max-width:480px) {
+		.row.white {
+			height: 50%;
+		}
+	}
+}

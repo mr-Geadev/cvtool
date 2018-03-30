@@ -1,0 +1,101 @@
+:host {
+
+	select {
+		display: block;
+	}
+
+	textarea.ng-valid.ng-touched, textarea.ng-valid.ng-touched:focus,
+	input.ng-valid.ng-touched, input.ng-valid.ng-touched:focus {
+		border-bottom: 1px solid #4CAF50;
+		-webkit-box-shadow: 0 1px 0 0 #4CAF50;
+		box-shadow: 0 1px 0 0 #4CAF50;
+	}
+
+	textarea.ng-invalid.ng-touched, textarea.ng-invalid.ng-touched:focus,
+	input.ng-invalid.ng-touched, input.ng-invalid.ng-touched:focus,
+	input.ng-touched.custom-invalid, input.ng-touched.custom-invalid:focus {
+		border-bottom: 1px solid #F44336;
+		-webkit-box-shadow: 0 1px 0 0 #F44336;
+		box-shadow: 0 1px 0 0 #F44336;
+	}
+
+	textarea, input {
+		margin-bottom: 0;
+	}
+
+	.export-field {
+		position: relative;
+
+		.tooltipped {
+			position: absolute;
+			opacity: 0;
+			z-index: 5;
+			top: 0;
+		}
+	}
+
+	span.error{
+		display: block;
+		color: #F44336;
+		opacity: 1;
+	}
+
+	.form-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.cv.card-panel {
+
+		form {
+			margin-top: 4rem;
+
+			h5 {
+				margin-top: 3rem;
+				a {
+					margin-left: 1rem;
+				}
+			}
+
+			.input-field {
+				margin-bottom: 30px;
+			}
+
+			h6 {
+				margin-bottom: 0.5rem;
+			}
+
+			.certificates {
+				margin-top: 3rem;
+			}
+
+			.card.multiple {
+				margin-top: 2rem;
+
+				h6 {
+					margin-bottom: 1rem;
+				}
+
+				&.experience h6{
+					margin-bottom: 2rem;
+				}
+
+				.checkbox {
+					margin-top: 2.5rem ;
+				}
+
+				.input-field {
+					margin-top: 1.7rem;
+				}
+			}
+
+			.row.submit {
+				margin-top: 2rem;
+				margin-left: 0;
+				margin-right: 0;
+			}
+		}
+	}
+
+}

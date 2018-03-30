@@ -1,0 +1,422 @@
+<div class="cv card-panel" *ngIf="CVForm">
+    <div class="form-header">
+        <h4 *ngIf="myForm">Your CV </h4>
+        <h4 *ngIf="!myForm">{{preliminaryForm.unchangeable.name}}'s CV</h4>
+        <div class="export-field">
+            <button class="btn dropdown-button"
+                    materialize="dropdown" data-constrainWidth="true"
+                    data-beloworigin="true"
+                    data-activates="typeExport"
+                    data-hover="true"
+                    [disabled]="CVForm.invalid || formChanged">&nbsp;&nbsp;Export&nbsp;&nbsp;
+            </button>
+
+            <ul id="typeExport" class="dropdown-content grey-text text-darken-4">
+                <li>
+                    <a download="CV {{preliminaryForm.unchangeable.name}}" href="/export?username={{id}}">PDF<i class="material-icons">cloud_download</i></a>
+                </li>
+                <li>
+                    <a download="CV {{preliminaryForm.unchangeable.name}}" href="/exportDOCX?username={{id}}">DOCX<i class="material-icons">cloud_download</i></a>
+                </li>
+            </ul>
+
+            <a class="btn tooltipped"
+               materialize='tooltip'
+               data-position="bottom"
+               data-delay="50"
+               data-tooltip="Form is invalid"
+               *ngIf="CVForm.invalid">Export</a>
+
+            <a class="btn tooltipped"
+               materialize='tooltip'
+               data-position="bottom"
+               data-delay="50"
+               data-tooltip="Form not saved"
+               *ngIf="formChanged">Export</a>
+
+        </div>
+    </div>
+    <p *ngIf="!myForm">{{preliminaryForm.unchangeable.title}}, {{preliminaryForm.unchangeable.grade}}</p>
+    <p *ngIf="preliminaryForm.unchangeable.dateOfLastModify">Last update: {{preliminaryForm.unchangeable.dateOfLastModify | amTimeAgo}}</p>
+
+    <form [formGroup]="CVForm" validate (submit)="submit()" (input)="setFormChanged(true)" *ngIf="showContent">
+
+        <p class="input-field">
+                <textarea class="materialize-textarea"
+                          placeholder="Your short biography"
+                          id="biography"
+                          formControlName="summary"></textarea>
+            <label for="biography" class="active">Summary</label>
+            <span class="error"
+                  *ngIf="CVForm.controls['summary'].hasError('required') && CVForm.controls['summary'].touched">
+                    Required field
+                </span>
+            <span class="error" *ngIf="CVForm.controls['summary'].hasError('maxlength')">
+                    Should be not more than 2000 characters
+                </span>
+        </p>
+        <p class="input-field">
+                <textarea class="materialize-textarea "
+                          placeholder='Programming languages and technologies that you own (separating the symbol ";")'
+                          id="skills"
+                          formControlName="techSkills"></textarea>
+            <label for="skills" data-error="Required field" class="active">Languages & tech skills</label>
+            <span class="error"
+                  *ngIf="CVForm.controls['techSkills'].hasError('required') && CVForm.controls['techSkills'].touched">
+                    Required field
+                </span>
+            <span class="error" *ngIf="CVForm.controls['techSkills'].hasError('maxlength')">
+                    Should be not more than 2000 characters
+            </span>
+        </p>
+
+        <h5>Educations<a id="addEducationButton"
+                         (click)="add(EDUCATION)"
+                          class="btn-floating waves-effect waves-light red"><i
+                class="material-icons">add</i></a></h5>
+
+        <div class="card grey lighten-5 multiple educations" formArrayName="educationList"
+             *ngFor="let education of CVForm.controls[EDUCATION]['controls']; let i = index">
+            <div class="card-image">
+                <a (click)="remove(EDUCATION, i)" class="btn-floating halfway-fab waves-effect waves-light grey"><i
+                        class="material-icons">remove</i></a>
+            </div>
+            <div class="card-content" [formGroupName]="i">
+                <h6>University {{i+1}}</h6>
+                <p  class="input-field">
+                    <input type="number"
+                           onkeydown="javascript: return event.keyCode > 47 && event.keyCode < 58 || event.keyCode == 8 || event.keyCode == 46 || event.keyCode == 37 || event.keyCode == 9 || event.keyCode == 39? true: false"
+                           class="input" [class.custom-invalid]="error.edu[i]"
+                           id="university-{{i}}-start-year"
+                           name="university-{{i}}-start-year"
+                           formControlName="start"
+                           (input)="checkErrorEdu(i)">
+                    <label class="active" for="university-{{i}}-start-year">Year of start education</label>
+                    <span class="error"
+                          *ngIf="CVForm.controls[EDUCATION]['controls'][i]['controls']['start'].hasError('required') && CVForm.controls[EDUCATION]['controls'][i]['controls']['start'].touched">
+                        Required field
+                    </span>
+                    <span class="error"
+                          *ngIf="CVForm.controls[EDUCATION]['controls'][i]['controls']['start'].hasError('pattern')">
+                        Correct format is 'yyyy'
+                    </span>
+                    <span class="error"
+                          *ngIf="!(CVForm.controls[EDUCATION]['controls'][i]['controls']['start'].hasError('pattern')) && CVForm.controls[EDUCATION]['controls'][i]['controls']['start'].hasError('year')">
+                        Enter value less than current date
+                    </span>
+                </p>
+                <p class="input-field">
+                    <input type="number"
+                           onkeydown="javascript: return event.keyCode > 47 && event.keyCode < 58 || event.keyCode == 8 || event.keyCode == 46 || event.keyCode == 37 || event.keyCode == 39? true: false"
+                           class="input" [class.custom-invalid]="error.edu[i]"
+                           id="university-{{i}}-end-year"
+                           name="university-{{i}}-end-year"
+                           formControlName="end"
+                           (input)="checkErrorEdu(i)">
+                    <label class="active" for="university-{{i}}-end-year">Year of end education</label>
+                    <span class="error"
+                          *ngIf="CVForm.controls[EDUCATION]['controls'][i]['controls']['end'].hasError('required') && CVForm.controls[EDUCATION]['controls'][i]['controls']['end'].touched">
+                        Required field
+                    </span>
+                    <span class="error"
+                          *ngIf="CVForm.controls[EDUCATION]['controls'][i]['controls']['end'].hasError('pattern')">
+                        Correct format is 'yyyy'
+                    </span>
+                    <span class="error"
+                          *ngIf="!CVForm.controls[EDUCATION]['controls'][i]['controls']['end'].hasError('pattern') && error.edu[i]">
+                        Start Date more than End Date
+                    </span>
+                </p>
+                <p class="input-field">
+                    <input type="text"
+                           class="input validate"
+                           id="university-{{i}}"
+                           name="university-{{i}}"
+                           formControlName="university">
+                    <label class="active" for="university-{{i}}" data-error="Required field">Name of University</label>
+                    <span class="error"
+                          *ngIf="CVForm.controls[EDUCATION]['controls'][i]['controls']['university'].hasError('required') && CVForm.controls[EDUCATION]['controls'][i]['controls']['university'].touched">
+                        Required field
+                    </span>
+                    <span class="error"
+                          *ngIf="CVForm.controls[EDUCATION]['controls'][i]['controls']['university'].hasError('maxlength')">
+                        Should be not more than 200 characters
+                    </span>
+                </p>
+                <p class="input-field">
+                    <input type="text"
+                           class="input validate"
+                           id="faculty-{{i}}"
+                           name="faculty-{{i}}"
+                           formControlName="faculty">
+                    <label class="active" for="faculty-{{i}}">Name of faculty</label>
+                    <span class="error"
+                          *ngIf="CVForm.controls[EDUCATION]['controls'][i]['controls']['faculty'].hasError('required') && CVForm.controls[EDUCATION]['controls'][i]['controls']['faculty'].touched">
+                        Required field
+                    </span>
+                    <span class="error"
+                          *ngIf="CVForm.controls[EDUCATION]['controls'][i]['controls']['faculty'].hasError('maxlength')">
+                        Should be not more than 200 characters
+                    </span>
+                </p>
+            </div>
+        </div>
+
+        <h6 class="right-align" *ngIf="CVForm.controls[EDUCATION]['controls'].length > 0">
+            Add more
+            <a id="addEducationButton-other"
+               (click)="add(EDUCATION)"
+               class="btn-floating waves-effect waves-light red"><i class="material-icons">add</i></a>
+        </h6>
+
+        <p class="input-field certificates">
+                <textarea class="materialize-textarea"
+                          placeholder="The professional certificates you possess"
+                          id="certificates"
+                          formControlName="certificates"></textarea>
+            <label for="certificates" class="active">Certificates</label>
+            <span class="error"
+                  *ngIf="CVForm.controls['certificates'].hasError('required') && CVForm.controls['certificates'].touched">
+                    Required field
+                </span>
+            <span class="error" *ngIf="CVForm.controls['certificates'].hasError('maxlength')">
+                    Should be not more than 2000 characters
+            </span>
+        </p>
+
+        <h5>Project Experience<a id="addProjectButton"
+                                  (click)="add(PROJECT)"
+                                  class="btn-floating waves-effect waves-light red"><i
+                class="material-icons">add</i></a>
+        </h5>
+
+        <div class="card grey lighten-5 multiple experience" formArrayName="projectExperienceList"
+             *ngFor="let project of CVForm.controls[PROJECT]['controls']; let i = index">
+            <div class="card-image">
+                <a (click)="remove(PROJECT, i)"
+                   class="btn-floating halfway-fab waves-effect waves-light grey"><i
+                        class="material-icons">remove</i></a>
+            </div>
+            <div class="card-content" [formGroupName]="i">
+                <h6>Project {{i+1}}</h6>
+                <p class="input-field">
+                    <input type="text"
+                           class="input"
+                           placeholder="Name"
+                           id="project-{{i}}-title"
+                           name="project-{{i}}-title"
+                           formControlName="name">
+                    <label class="active" for="project-{{i}}-title">Name of Project</label>
+                    <span class="error"
+                          *ngIf="CVForm.controls[PROJECT]['controls'][i]['controls']['name'].hasError('required') && CVForm.controls[PROJECT]['controls'][i]['controls']['name'].touched">
+                        Required field
+                    </span>
+                    <span class="error"
+                          *ngIf="CVForm.controls[PROJECT]['controls'][i]['controls']['name'].hasError('maxlength')">
+                        Should be not more than 200 characters
+                    </span>
+                </p>
+                <p class="input-field">
+                    <textarea type="text"
+                              class="materialize-textarea"
+                              placeholder="Your responsibilities in project"
+                              id="project-{{i}}-responsibilities"
+                              name="project-{{i}}-responsibilities"
+                              formControlName="responsibilities"></textarea>
+                    <label class="active" for="project-{{i}}-responsibilities">Responsibilities</label>
+                    <span class="error"
+                          *ngIf="CVForm.controls[PROJECT]['controls'][i]['controls']['responsibilities'].hasError('required') && CVForm.controls[PROJECT]['controls'][i]['controls']['responsibilities'].touched">
+                        Required field
+                    </span>
+                    <span class="error"
+                          *ngIf="CVForm.controls[PROJECT]['controls'][i]['controls']['responsibilities'].hasError('maxlength')">
+                        Should be not more than 2000 characters
+                    </span>
+                </p>
+                <p class="input-field">
+                    <input type="text"
+                           class="input"
+                           placeholder="The organization in which you were involved in the project"
+                           id="project-{{i}}-organization"
+                           name="project-{{i}}-organization"
+                           formControlName="organization">
+                    <label class="active" for="project-{{i}}-organization">Organization</label>
+                    <span class="error"
+                          *ngIf="CVForm.controls[PROJECT]['controls'][i]['controls']['organization'].hasError('required') && CVForm.controls[PROJECT]['controls'][i]['controls']['organization'].touched">
+                        Required field
+                    </span>
+                    <span class="error"
+                          *ngIf="CVForm.controls[PROJECT]['controls'][i]['controls']['organization'].hasError('maxlength')">
+                        Should be not more than 200 characters
+                    </span>
+                </p>
+                <p class="input-field">
+                    <input type="text"
+                           class="input"
+                           placeholder="Your position in the project"
+                           id="project-{{i}}-jobTitle"
+                           name="project-{{i}}-jobTitle"
+                           formControlName="position">
+                    <label class="active" for="project-{{i}}-jobTitle">Position</label>
+                    <span class="error"
+                          *ngIf="CVForm.controls[PROJECT]['controls'][i]['controls']['position'].hasError('required') && CVForm.controls[PROJECT]['controls'][i]['controls']['position'].touched">
+                        Required field
+                    </span>
+                    <span class="error"
+                          *ngIf="CVForm.controls[PROJECT]['controls'][i]['controls']['position'].hasError('maxlength')">
+                        Should be not more than 200 characters
+                    </span>
+                </p>
+                <p class="input-field">
+                    <input type="text"
+                           class="input" [class.custom-invalid]="error.project[i]"
+                           placeholder="Year started"
+                           id="project-{{i}}-yearStart"
+                           name="project-{{i}}-yearStart"
+                           formControlName="start"
+                           (input)="checkProjectEdu(i)">
+                    <label class="active" for="project-{{i}}-yearStart">Start</label>
+                    <span class="error"
+                          *ngIf="CVForm.controls[PROJECT]['controls'][i]['controls']['start'].hasError('required') && CVForm.controls[PROJECT]['controls'][i]['controls']['start'].touched">
+                        Required field
+                    </span>
+                    <span class="error"
+                          *ngIf="CVForm.controls[PROJECT]['controls'][i]['controls']['start'].hasError('pattern')">
+                        Correct format is 'mm/yyyy'
+                    </span>
+                    <span class="error"
+                          *ngIf="!CVForm.controls[PROJECT]['controls'][i]['controls']['start'].hasError('pattern') && CVForm.controls[PROJECT]['controls'][i]['controls']['start'].hasError('invalidMonth')">
+                        Month is invalid
+                    </span>
+                    <span class="error"
+                          *ngIf="!CVForm.controls[PROJECT]['controls'][i]['controls']['start'].hasError('pattern') && !CVForm.controls[PROJECT]['controls'][i]['controls']['start'].hasError('invalidMonth') && CVForm.controls[PROJECT]['controls'][i]['controls']['start'].hasError('year')">
+                       Enter value less than current date
+                    </span>
+                </p>
+                <div class="row">
+                    <p class="input-field col s12 m6">
+                        <input type="text"
+                               class="input" [class.custom-invalid]="error.project[i]"
+                               placeholder="Year of completion of the project"
+                               id="project-{{i}}-yearEnd"
+                               name="project-{{i}}-yearEnd"
+                               formControlName="end"
+                               (input)="checkProjectEdu(i)">
+                        <label class="active" for="project-{{i}}-yearEnd">End</label>
+                        <span class="error"
+                              *ngIf="(CVForm.controls[PROJECT]['controls'][i]['controls']['end'].hasError('required') && CVForm.controls[PROJECT]['controls'][i]['controls']['end'].touched) || (!CVForm.controls[PROJECT]['controls'][i]['controls']['end'].value && CVForm.controls[PROJECT]['controls'][i]['controls']['tillNow'].dirty && !CVForm.controls[PROJECT]['controls'][i]['controls']['tillNow'].value)">
+                            Required field. One of the fields "Till now" or "End Date" should be filled
+                        </span>
+                        <span class="error"
+                              *ngIf="CVForm.controls[PROJECT]['controls'][i]['controls']['end'].hasError('pattern')">
+                            Correct format is 'mm/yyyy'
+                        </span>
+                        <span class="error"
+                              *ngIf="!CVForm.controls[PROJECT]['controls'][i]['controls']['end'].hasError('pattern') && CVForm.controls[PROJECT]['controls'][i]['controls']['end'].hasError('invalidMonth')">
+                            Month is invalid
+                        </span>
+                        <span class="error"
+                              *ngIf="!CVForm.controls[PROJECT]['controls'][i]['controls']['end'].hasError('pattern') && !CVForm.controls[PROJECT]['controls'][i]['controls']['end'].hasError('invalidMonth') && CVForm.controls[PROJECT]['controls'][i]['controls']['end'].hasError('year')">
+                            Enter value less than current date
+                        </span>
+                        <span class="error" *ngIf="error.project[i]">
+                            Start Date more than End Date
+                        </span>
+                    </p>
+                    <p class="col s12 m3 checkbox">
+                        <input type="checkbox"
+                               class="filled-in"
+                               id="tillNow-{{i}}"
+                               name="project-{{i}}-tillNow"
+                               formControlName="tillNow"
+                               value="true"
+                               (change)="reactivateEndDate(i)">
+                        <label for="tillNow-{{i}}">Till now</label>
+                    </p>
+                </div>
+                <p class="input-field">
+                    <input type="text"
+                           class="input"
+                           placeholder="Short description of project"
+                           id="project-{{i}}-shortDescriptions"
+                           name="project-{{i}}-shortDescriptions"
+                           formControlName="description">
+                    <label class="active" for="project-{{i}}-shortDescriptions">Description</label>
+                    <span class="error"
+                          *ngIf="CVForm.controls[PROJECT]['controls'][i]['controls']['description'].hasError('required') && CVForm.controls[PROJECT]['controls'][i]['controls']['description'].touched">
+                        Required field
+                    </span>
+                    <span class="error"
+                          *ngIf="CVForm.controls[PROJECT]['controls'][i]['controls']['description'].hasError('maxlength')">
+                        Should be not more than 500 characters
+                    </span>
+                </p>
+                <p class="input-field">
+                    <textarea type="text"
+                              class="materialize-textarea"
+                              placeholder="List key accomplishments. Indicate some extraordinary or meaningful results and achievements"
+                              id="project-{{i}}-achievements"
+                              name="project-{{i}}-achievements"
+                              formControlName="achievements"></textarea>
+                    <label class="active" for="project-{{i}}-achievements">Achievements</label>
+                    <span class="error"
+                          *ngIf="CVForm.controls[PROJECT]['controls'][i]['controls']['achievements'].hasError('required') && CVForm.controls[PROJECT]['controls'][i]['controls']['achievements'].touched">
+                        Required field
+                    </span>
+                    <span class="error"
+                          *ngIf="CVForm.controls[PROJECT]['controls'][i]['controls']['achievements'].hasError('maxlength')">
+                        Should be not more than 2000 characters
+                    </span>
+                </p>
+                <p class="input-field">
+                    <input type="text"
+                           class="input"
+                           placeholder='The technologies that you used on the project (Separating the symbol ";")'
+                           id="project-{{i}}-technologies"
+                           name="project-{{i}}-technologies"
+                           formControlName="techSkills">
+                    <label class="active" for="project-{{i}}-technologies">Technologies</label>
+                    <span class="error"
+                          *ngIf="CVForm.controls[PROJECT]['controls'][i]['controls']['techSkills'].hasError('required') && CVForm.controls[PROJECT]['controls'][i]['controls']['techSkills'].touched">
+                        Required field
+                    </span>
+                    <span class="error"
+                          *ngIf="CVForm.controls[PROJECT]['controls'][i]['controls']['techSkills'].hasError('maxlength')">
+                        Should be not more than 500 characters
+                    </span>
+                </p>
+                <p class="input-field">
+                        <textarea class="materialize-textarea"
+                                  placeholder="Number and composition of the team working on the project"
+                                  id="project-{{i}}-team"
+                                  name="project-{{i}}-team"
+                                  formControlName="team"></textarea>
+                    <label class="active" for="project-{{i}}-team">Team</label>
+                    <span class="error"
+                          *ngIf="CVForm.controls[PROJECT]['controls'][i]['controls']['team'].hasError('required') && CVForm.controls[PROJECT]['controls'][i]['controls']['team'].touched">
+                        Required field
+                    </span>
+                    <span class="error"
+                          *ngIf="CVForm.controls[PROJECT]['controls'][i]['controls']['team'].hasError('maxlength')">
+                        Should be not more than 500 characters
+                    </span>
+                </p>
+            </div>
+        </div>
+
+        <h6 class="right-align" *ngIf="CVForm.controls[PROJECT]['controls'].length > 0">
+            Add more
+            <a id="addProjectButton-other"
+               (click)="add(PROJECT)"
+               class="btn-floating waves-effect waves-light red"><i class="material-icons">add</i></a>
+        </h6>
+
+        <div class="row submit" >
+            <button class="btn waves-effect waves-light col s12 m2 offset-m10" type="submit"
+                    [disabled]="CVForm.invalid || !checkErrorEdu() || !checkProjectEdu() || !formChanged">
+                Submit
+                <i class="material-icons right">send</i>
+            </button>
+        </div>
+    </form>
+</div>

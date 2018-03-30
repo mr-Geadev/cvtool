@@ -1,0 +1,73 @@
+<header xmlns="http://www.w3.org/1999/html" *ngIf="currentUser">
+    <ul id="links" class="dropdown-content grey-text text-darken-4">
+        <li><a href="https://library.griddynamics.net"><img src="/assets/icons/library.svg">Library</a></li>
+        <li><a href="https://old-skilltree.griddynamics.net"><img src="/assets/icons/skilltree.svg">SkillTree</a></li>
+        <li><a href="https://in.griddynamics.net"><img src="/assets/icons/ingrid.png">Ingrid</a></li>
+        <li><a href="https://timesheets.griddynamics.net"><img src="/assets/icons/timesheets.svg">TimeSheets</a></li>
+    </ul>
+
+    <ul id="signOut" class="dropdown-content grey-text text-darken-4">
+        <li (click)="signOut()"><a>Sign Out</a></li>
+    </ul>
+
+
+    <nav class="white grey-text text-darken-4">
+        <div class="nav-wrapper valign-wrapper">
+            <a materialize="sideNav" href="#!"
+               data-activates="manager-bar" class="button-collapse"
+               *ngIf="currentUser?.role === 'manager'">
+                <i class="material-icons grey-text text-darken-4">people_outline</i>My team</a>
+            <a class="logo indigo-text text-darken-3">{{TITLE}} <span *ngIf="version">{{version}}</span></a>
+            <a materialize="sideNav" href="#!" data-activates="mobile" class="button-collapse"><i
+                    class="material-icons grey-text text-darken-4">menu</i></a>
+
+
+            <!--laptop&desktop-->
+            <ul class="menu-full right hide-on-med-and-down valign-wrapper">
+                <li class="valign-wrapper name">
+                    {{currentUser.name}}
+                </li>
+                <li class="valign-wrapper grade">
+                    {{currentUser.title}}, {{currentUser.grade}}
+                </li>
+                <li class="sign-out">
+                    <a materialize="dropdown" data-constrainWidth="false" data-beloworigin="true"
+                       data-activates="signOut" class="valign-wrapper">
+                        <div class="userpic circle" *ngIf="currentUser.photo">
+                            <img src="{{currentUser.photo}}" alt="">
+                        </div>
+                        <div class="userpic circle" *ngIf="!currentUser.photo">
+                            <i class="material-icons grey-text text-darken-4">face</i>
+                        </div>
+                    </a>
+                </li>
+                <li><a><i materialize="dropdown" data-constrainWidth="false" data-beloworigin="true"
+                          data-activates="links" class="material-icons grey-text text-darken-4">apps</i></a></li>
+            </ul>
+
+            <!--tab&mobile-->
+            <ul class="side-nav" id="mobile">
+
+                <li *ngIf="currentUser">
+                    <a class="valign-wrapper">
+                        <div class="userpic circle"><img src="{{currentUser?.photo}}" alt=""></div>
+                        <div class="text">
+                            <span class="name">{{currentUser.name}}</span>
+                            <span class="grade">{{currentUser.title}}, {{currentUser.grade}}</span>
+                        </div>
+                    </a>
+                </li>
+                <li><a href="https://library.griddynamics.net" class="valign-wrapper"><img
+                        src="/assets/icons/library.svg">Library</a></li>
+                <li><a href="https://old-skilltree.griddynamics.net" class="valign-wrapper"><img
+                        src="/assets/icons/skilltree.svg">SkillTree</a></li>
+                <li><a href="https://in.griddynamics.net" class="valign-wrapper"><img src="/assets/icons/ingrid.png">Ingrid</a>
+                </li>
+                <li><a href="https://timesheets.griddynamics.net" class="valign-wrapper"><img
+                        src="/assets/icons/timesheets.svg">TimeSheets</a></li>
+                <li><a (click)="signOut()" class="valign-wrapper sign-out">Sign Out</a></li>
+            </ul>
+
+        </div>
+    </nav>
+</header>
