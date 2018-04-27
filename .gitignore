@@ -2,6 +2,7 @@
 
 #my
 ../package-lock.json
+package-lock.json
 .editorconfig
 
 # compiled output
